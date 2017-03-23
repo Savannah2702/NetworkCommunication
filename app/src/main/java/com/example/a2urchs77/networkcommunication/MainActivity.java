@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.os.AsyncTask;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -15,12 +16,13 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 public class MainActivity extends Activity implements View.OnClickListener {
 
-    class MyTask extends AsyncTask<Void,Void,String>
+    class MyTask extends AsyncTask<String,Void,String>
     {
-        public String doInBackground (Void... unused) {
+        public String doInBackground (String...arguments)
+        {
             HttpURLConnection conn = null;
             try {
-                URL url = new URL("http://www.free-map.org.uk/course/mad/ws/hits.php?artist=Oasis");
+                URL url = new URL("http://www.free-map.org.uk/course/mad/ws/hits.php?artist="+arguments[0]);
                 conn = (HttpURLConnection) url.openConnection();
                 InputStream in = conn.getInputStream();
                 if (conn.getResponseCode() == 200) {
@@ -57,8 +59,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         public void onClick(View v)
         {
+            EditText artist1 = (EditText)findViewById(R.id.et1);
+            String artist = (artist1.getText().toString());
             MyTask t = new MyTask();
-            t.execute();
+            t.execute(artist);
         }
     }
 
