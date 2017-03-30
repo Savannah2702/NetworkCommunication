@@ -1,12 +1,17 @@
 package com.example.a2urchs77.networkcommunication;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.os.AsyncTask;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -23,12 +28,12 @@ public class DownloadActivity extends Activity implements View.OnClickListener {
         @Override
         protected String doInBackground(String... params) {
             String url = params[0];
-            String artist = params[1];
+            String artist1 = params[1];
 
             HttpURLConnection connection;
 
             try {
-                URL urlObject = new URL(url + "?artist=" + artist);
+                URL urlObject = new URL(url + "?artist=" + artist1 + "&format=json");
                 connection = (HttpURLConnection) urlObject.openConnection();
 
                 if (connection.getResponseCode() == HTTP_OK) {
@@ -42,12 +47,28 @@ public class DownloadActivity extends Activity implements View.OnClickListener {
                         line = br.readLine();
                     }
 
-                    return lines;
+                    JSONArray jsonArr = new JSONArray(lines);
+                    String curSong, curArtist, curYear;
+
+                    TextView tv = (TextView) findViewById(R.id.tv1);
+                    String songs = "";
+
+                    for (int i = 0; i < jsonArr.length(); i++) {
+                        JSONObject curObj = jsonArr.getJSONObject(i);
+                        String name = curObj.getString("song"),
+                                artist = curObj.getString("artist"),
+                                year = curObj.getString("year");
+                        songs += " Name=" + name + "Artist =" + artist + "Year=" + year + "\n";
+                    }
+                    return songs;
+                } else {
+                    return "HTTP Error!";
                 }
             } catch (IOException e) {
                 return "Error!:" + e.getMessage();
+            } catch (JSONException e) {
+                return "Error: Something went wrong";
             }
-            return "Error: Something went wrong";
         }
 
         @Override
