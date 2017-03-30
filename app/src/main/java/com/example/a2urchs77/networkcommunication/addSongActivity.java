@@ -85,12 +85,10 @@ public class addSongActivity extends AppCompatActivity implements View.OnClickLi
         EditText year = (EditText) findViewById(R.id.year);
         String yearSong = year.getText().toString();
 
+
         new AddSongAsyncTask().execute(songTitle, artistName, yearSong);
 
-        AsyncTask t = new AddSongAsyncTask();
-        t.execute();
-
-    }
+            }
 }
 
 

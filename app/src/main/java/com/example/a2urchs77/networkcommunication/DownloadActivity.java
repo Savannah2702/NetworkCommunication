@@ -48,9 +48,7 @@ public class DownloadActivity extends Activity implements View.OnClickListener {
                     }
 
                     JSONArray jsonArr = new JSONArray(lines);
-                    String curSong, curArtist, curYear;
 
-                    TextView tv = (TextView) findViewById(R.id.tv1);
                     String songs = "";
 
                     for (int i = 0; i < jsonArr.length(); i++) {
@@ -58,7 +56,7 @@ public class DownloadActivity extends Activity implements View.OnClickListener {
                         String name = curObj.getString("song"),
                                 artist = curObj.getString("artist"),
                                 year = curObj.getString("year");
-                        songs += " Name=" + name + "Artist =" + artist + "Year=" + year + "\n";
+                        songs += " Name: " + name + "," + "\r" + "Artist: " + artist + "," + "\r" + "Year: " + year + "\n";
                     }
                     return songs;
                 } else {
@@ -67,7 +65,7 @@ public class DownloadActivity extends Activity implements View.OnClickListener {
             } catch (IOException e) {
                 return "Error!:" + e.getMessage();
             } catch (JSONException e) {
-                return "Error: Something went wrong";
+                return "Error!:" + e.getMessage();
             }
         }
 
